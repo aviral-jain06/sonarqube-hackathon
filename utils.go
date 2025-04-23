@@ -5,56 +5,50 @@ import (
 	"os"
 )
 
-// Global variable - bad practice
-var DEBUG = true
+// Config struct to replace global variable
+type Config struct {
+	Debug bool
+}
 
-// Function with too many nested if statements
-func processRequest(input string) {
-	if input != "" {
-		if len(input) > 5 {
-			if input[0] == 'A' {
-				if DEBUG {
-					fmt.Println("Processing:", input)
-				}
-			}
-		}
+// Function refactored to reduce nesting
+func processRequest(input string, cfg Config) {
+	if input == "" || len(input) <= 5 || input[0] != 'A' {
+		return
+	}
+	if cfg.Debug {
+		fmt.Println("Processing:", input)
 	}
 }
 
-// Duplicated code
+// Unified validation function to remove duplication
+func validateString(s string, minLength, maxLength int) bool {
+	if s == "" {
+		return false
+	}
+	length := len(s)
+	return length >= minLength && length <= maxLength
+}
+
+// Using the unified validation function
 func validateInput(s string) bool {
-	if s == "" {
-		return false
-	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
-	}
-	return true
+	return validateString(s, 3, 50)
 }
 
-// Another duplicate
+// Using the unified validation function
 func validateName(s string) bool {
-	if s == "" {
-		return false
-	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
-	}
-	return true
+	return validateString(s, 3, 50)
 }
 
-// Function with security issues
-func checkPermissions(filename string) {
-	os.Chmod(filename, 0777) // Security issue - overly permissive file permissions
+// Function with improved security
+func checkPermissions(filename string) error {
+	// Using more restrictive permissions (e.g., 0644 for files)
+	return os.Chmod(filename, 0644)
 }
 
-// Poor error handling
-func divide(a, b int) int {
-	return a / b  // No error handling for division by zero
+// Improved error handling
+func divide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, fmt.Errorf("division by zero")
+	}
+	return a / b, nil
 }
