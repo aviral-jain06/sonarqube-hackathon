@@ -1,0 +1,11 @@
+name: SonarQube AI Fixer
+on:
+  workflow_dispatch:
+jobs:
+  fix-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Fix API
+        run: |
+          curl -X GET http://3.88.49.28:5000/fix-repo?repo="https://github.com/${{ github.repository }}"
+
