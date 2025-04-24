@@ -5,56 +5,48 @@ import (
 	"os"
 )
 
-// Global variable - bad practice
-var DEBUG = true
+// DEBUG is now a constant instead of a global variable
+const DEBUG = true
 
-// Function with too many nested if statements
+// processRequest simplified to reduce nesting
 func processRequest(input string) {
-	if input != "" {
-		if len(input) > 5 {
-			if input[0] == 'A' {
-				if DEBUG {
-					fmt.Println("Processing:", input)
-				}
-			}
-		}
+	if input == "" || len(input) <= 5 || input[0] != 'A' {
+		return
+	}
+	if DEBUG {
+		fmt.Println("Processing:", input)
 	}
 }
 
-// Duplicated code
-func validateInput(s string) bool {
-	if s == "" {
+// validateInput now handles both input and name validation
+func validateInput(s string, inputType string) bool {
+	if s == "" || len(s) < 3 || len(s) > 50 {
 		return false
 	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
+	// Additional validation for specific input types can be added here
+	switch inputType {
+	case "name":
+		// Add name-specific validation if needed
+	default:
+		// Add default validation if needed
 	}
 	return true
 }
 
-// Another duplicate
-func validateName(s string) bool {
-	if s == "" {
-		return false
-	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
-	}
-	return true
-}
+// Removed duplicate function validateName
 
-// Function with security issues
+// checkPermissions now uses more restrictive permissions
 func checkPermissions(filename string) {
-	os.Chmod(filename, 0777) // Security issue - overly permissive file permissions
+	err := os.Chmod(filename, 0644) // Changed to more restrictive permissions
+	if err != nil {
+		fmt.Println("Error changing file permissions:", err)
+	}
 }
 
-// Poor error handling
-func divide(a, b int) int {
-	return a / b  // No error handling for division by zero
+// divide now includes error handling for division by zero
+func divide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, fmt.Errorf("division by zero")
+	}
+	return a / b, nil
 }
