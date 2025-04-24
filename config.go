@@ -4,18 +4,18 @@ import "time"
 
 // Configuration struct with exposed sensitive information
 type Config struct {
-	DBPassword      string
-	APIKey          string
-	PrivateKeyPath  string
+	DBPassword       string
+	APIKey           string
+	PrivateKeyPath   string
 	AdminCredentials map[string]string
 }
 
 // Poorly structured initialization
 func initConfig() Config {
 	return Config{
-		DBPassword: "root123",  // Hardcoded credential
-		APIKey: "sk_test_12345", // Exposed API key
-		PrivateKeyPath: "/etc/keys/private.key",
+		DBPassword:       "root123",  // Hardcoded credential
+		APIKey:           "sk_test_12345", // Exposed API key
+		PrivateKeyPath:   "/etc/keys/private.key",
 		AdminCredentials: map[string]string{
 			"admin": "admin123",  // Hardcoded credential
 		},
@@ -23,18 +23,24 @@ func initConfig() Config {
 }
 
 // Function with unused parameters and poor error handling
-func validateConfig(conf Config, timeout time.Duration, retries int) {
-	// Empty if statement
-	if conf.DBPassword != "" {
-		
+// Comment: Removed unused parameters and improved error handling
+func validateConfig(conf Config) error {
+	// Comment: Removed empty if statement and added actual validation
+	if conf.DBPassword == "" {
+		return errors.New("DBPassword is empty")
 	}
 
-	// Nested if statements
-	if conf.APIKey != "" {
-		if conf.PrivateKeyPath != "" {
-			if len(conf.AdminCredentials) > 0 {
-				// Do something
-			}
-		}
+	// Comment: Flattened nested if statements and improved validation
+	if conf.APIKey == "" {
+		return errors.New("APIKey is empty")
 	}
+	if conf.PrivateKeyPath == "" {
+		return errors.New("PrivateKeyPath is empty")
+	}
+	if len(conf.AdminCredentials) == 0 {
+		return errors.New("AdminCredentials is empty")
+	}
+
+	// Do something with the validated configuration
+	return nil
 }
