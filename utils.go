@@ -5,56 +5,42 @@ import (
 	"os"
 )
 
-// Global variable - bad practice
-var DEBUG = true
+// Replaced global variable with a constant
+const debug = true
 
-// Function with too many nested if statements
+// Simplified nested if statements
 func processRequest(input string) {
-	if input != "" {
-		if len(input) > 5 {
-			if input[0] == 'A' {
-				if DEBUG {
-					fmt.Println("Processing:", input)
-				}
-			}
-		}
+	if input != "" && len(input) > 5 && input[0] == 'A' && debug {
+		fmt.Println("Processing:", input)
 	}
 }
 
-// Duplicated code
-func validateInput(s string) bool {
+// Generalized input validation function
+func validateInput(s string, minLength, maxLength int) bool {
 	if s == "" {
 		return false
 	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
-	}
-	return true
+	length := len(s)
+	return length >= minLength && length <= maxLength
 }
 
-// Another duplicate
+// Updated to use the generalized validateInput function
 func validateName(s string) bool {
-	if s == "" {
-		return false
-	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
-	}
-	return true
+	return validateInput(s, 3, 50)
 }
 
-// Function with security issues
+// Improved security by using more restrictive permissions
 func checkPermissions(filename string) {
-	os.Chmod(filename, 0777) // Security issue - overly permissive file permissions
+	err := os.Chmod(filename, 0600) // Changed to read/write for owner only
+	if err != nil {
+		fmt.Println("Error changing file permissions:", err)
+	}
 }
 
-// Poor error handling
-func divide(a, b int) int {
-	return a / b  // No error handling for division by zero
+// Added error handling for division by zero
+func divide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, fmt.Errorf("division by zero")
+	}
+	return a / b, nil
 }
