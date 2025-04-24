@@ -2,5 +2,5 @@ projectKey=byte-brains
 serverUrl=http://ec2-3-88-49-28.compute-1.amazonaws.com:9001
 serverVersion=9.9.8.100196
 dashboardUrl=http://ec2-3-88-49-28.compute-1.amazonaws.com:9001/dashboard?id=byte-brains
-ceTaskId=AZZiDsiarIUzZ3i7cbK3
-ceTaskUrl=http://ec2-3-88-49-28.compute-1.amazonaws.com:9001/api/ce/task?id=AZZiDsiarIUzZ3i7cbK3
+ceTaskId=AZZm1SOWrIUzZ3i7cbLM
+ceTaskUrl=http://ec2-3-88-49-28.compute-1.amazonaws.com:9001/api/ce/task?id=AZZm1SOWrIUzZ3i7cbLM
