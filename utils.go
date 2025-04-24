@@ -5,23 +5,20 @@ import (
 	"os"
 )
 
-// Global variable - bad practice
-var DEBUG = true
+// DEBUG is now a constant instead of a global variable
+const DEBUG = true
 
-// Function with too many nested if statements
+// processRequest simplified to reduce nesting
 func processRequest(input string) {
-	if input != "" {
-		if len(input) > 5 {
-			if input[0] == 'A' {
-				if DEBUG {
-					fmt.Println("Processing:", input)
-				}
-			}
-		}
+	if input == "" || len(input) <= 5 || input[0] != 'A' {
+		return
+	}
+	if DEBUG {
+		fmt.Println("Processing:", input)
 	}
 }
 
-// Duplicated code
+// validateInput function remains the same
 func validateInput(s string) bool {
 	if s == "" {
 		return false
@@ -35,26 +32,23 @@ func validateInput(s string) bool {
 	return true
 }
 
-// Another duplicate
+// validateName now calls validateInput to avoid duplication
 func validateName(s string) bool {
-	if s == "" {
-		return false
-	}
-	if len(s) < 3 {
-		return false
-	}
-	if len(s) > 50 {
-		return false
-	}
-	return true
+	return validateInput(s)
 }
 
-// Function with security issues
+// checkPermissions now uses more restrictive permissions
 func checkPermissions(filename string) {
-	os.Chmod(filename, 0777) // Security issue - overly permissive file permissions
+	err := os.Chmod(filename, 0600) // Changed to read/write for owner only
+	if err != nil {
+		fmt.Println("Error changing file permissions:", err)
+	}
 }
 
-// Poor error handling
-func divide(a, b int) int {
-	return a / b  // No error handling for division by zero
+// divide now includes error handling for division by zero
+func divide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, fmt.Errorf("division by zero")
+	}
+	return a / b, nil
 }
