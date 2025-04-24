@@ -4,37 +4,34 @@ import "time"
 
 // Configuration struct with exposed sensitive information
 type Config struct {
-	DBPassword      string
-	APIKey          string
-	PrivateKeyPath  string
+	DBPassword       string
+	APIKey           string
+	PrivateKeyPath   string
 	AdminCredentials map[string]string
 }
 
-// Poorly structured initialization
+// Improved initialization with placeholder values
 func initConfig() Config {
 	return Config{
-		DBPassword: "root123",  // Hardcoded credential
-		APIKey: "sk_test_12345", // Exposed API key
+		DBPassword:  "placeholder",     // Replace with secure method to retrieve password
+		APIKey:      "placeholder",     // Replace with secure method to retrieve API key
 		PrivateKeyPath: "/etc/keys/private.key",
 		AdminCredentials: map[string]string{
-			"admin": "admin123",  // Hardcoded credential
+			"admin": "placeholder", // Replace with secure method to retrieve admin credentials
 		},
 	}
 }
 
-// Function with unused parameters and poor error handling
-func validateConfig(conf Config, timeout time.Duration, retries int) {
-	// Empty if statement
-	if conf.DBPassword != "" {
-		
+// Function with improved error handling and removed unused parameters
+func validateConfig(conf Config) error {
+	// Removed empty if statement
+	
+	// Simplified nested if statements
+	if conf.DBPassword == "" || conf.APIKey == "" || conf.PrivateKeyPath == "" || len(conf.AdminCredentials) == 0 {
+		return fmt.Errorf("invalid configuration: missing required fields")
 	}
-
-	// Nested if statements
-	if conf.APIKey != "" {
-		if conf.PrivateKeyPath != "" {
-			if len(conf.AdminCredentials) > 0 {
-				// Do something
-			}
-		}
-	}
+	
+	// Additional validation logic can be added here
+	
+	return nil
 }
